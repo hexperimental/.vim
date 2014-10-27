@@ -1,0 +1,63 @@
+snippet docfunction "Adds a Symfony Document Getter" 
+/**
+ * $1.
+ *
+ * @return $2
+ */
+public function get$3()
+{
+	return $this->fetchNodeProperty('$4');
+}
+endsnippet
+
+snippet modelfunction "Adds a Symfony Model Getter" 
+
+public function get$1()
+{
+	return $this->fetchChild('$1');
+}
+endsnippet
+
+
+snippet setf 
+/**
+ * @param $$1
+ */
+public function set$2($$1)
+{
+	$this->$1 = $$1;
+}
+endsnippet
+
+snippet getf
+/**
+ * $1
+ *
+ * @return string
+ */
+public function get$2()
+{
+	return $this->$3;
+}
+endsnippet
+
+snippet log
+print '<pre>'.print_r($1,true).'</pre>';
+endsnippet
+
+snippet vardoc
+/**
+ * @type $1 $$2 $3.
+ */
+private $$2;
+endsnippet
+
+snippet fndoc
+/**
+ * $1
+ *
+ * @param $2 $3 $4.
+ *
+ * @return $5
+ */
+endsnippet
