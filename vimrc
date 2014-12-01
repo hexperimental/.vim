@@ -25,21 +25,34 @@ endif
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'Keithbsmiley/swift.vim'
+"Plugin 'toyamarinyon/vim-swift'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 " Plugin 'git://git.wincent.com/command-t.git'
 " Plugin 'file:///home/gmarik/path/to/plugin'
 " Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'user/L9', {'name': 'newL9'}
-"Plugin 'tpope/vim-unimpaired'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
+Plugin 'kien/ctrlp.vim'
+Plugin 'mileszs/ack.vim'
+" Plu
+" Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Raimondi/delimitMate'
+Plugin 'pangloss/vim-javascript'
+Plugin 'evidens/vim-twig'
+Plugin 'jlanzarotta/bufexplorer'
+"Plugin 'fholgado/minibufexpl.vim'
+" Plugin 'tmhedberg/matchit'
+Plugin 'tell-k/vim-browsereload-mac'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -66,6 +79,7 @@ set ignorecase "Ignore case when searching
 set smartcase
 set incsearch "Make search act like search in modern browsers
 set hlsearch
+let @/ = "" " clear the fearch registry so shits no hl when loading file
 set nolazyredraw "Don't redraw while executing macros 
 set showmatch "Show matching bracets when text indicator is over them
 set ttyscroll=3 " speed up scrolling
@@ -80,7 +94,6 @@ set nowrap "No wrapping.
 "=============================
 highlight ColorColumn ctermbg=235 guibg=#2c2d27
 let &colorcolumn="80,".join(range(120,999),",")
-
 set listchars=tab:▸\ ,eol:¬
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
@@ -91,7 +104,6 @@ set wrap linebreak nolist
 " Replacing grep with ack
 "set grepprg=ack
 
-"TODO: set tabs for specific filetypes 
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
@@ -102,10 +114,40 @@ set ai "Auto indent
 set si "Smart indet
 
 " Filetypes
+au BufRead,BufNewFile *.swift set filetype=swift
 au BufRead,BufNewFile *.module set filetype=php
 au BufRead,BufNewFile *.inc set filetype=php
+au BufRead,BufNewFile *.js set filetype=javascript
+au BufRead,BufNewFile *.php set filetype=php
+au BufRead,BufNewFile *.css set filetype=css
 au BufRead,BufNewFile *.install set filetype=php
 au BufRead,BufNewFile *.rss, *.atom set filetype=xml
+
+autocmd Filetype html set tabstop=4
+autocmd Filetype html set softtabstop=4 
+autocmd Filetype html set shiftwidth=4
+
+autocmd Filetype css set tabstop=4
+autocmd Filetype css set softtabstop=4 
+autocmd Filetype css set shiftwidth=4
+
+autocmd Filetype php set tabstop=4
+autocmd Filetype php set softtabstop=4 
+autocmd Filetype php set shiftwidth=4
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Indent Guides
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=234
+
+
+"let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+"let g:indent_guides_space_guides = 0
+"let g:indent_guides_color_change_percent = 90
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic Settings
@@ -127,44 +169,24 @@ nnoremap <silent> <F2> :%s/\r\(\n\)/\1/g<CR>
 " Mapping F5 to delete white spaces
 nnoremap <silent> <F4> :UltiSnipsEdit<CR>
 nnoremap <silent> <F5> :FufFile<CR>
+nnoremap <silent> <F6> :FufBuffer<CR>
 "nnoremap <silent> <F5> :call Preserve("%s/\\s\\+$//e")<CR>
-"nnoremap <silent> <F6> :call Preserve("normal gg=G")<CR>
+nnoremap <silent> <F6> :call Preserve("normal gg=G")<CR>
 nnoremap <silent> <F8> :source $MYVIMRC<CR>
 nnoremap <silent> <F9> :SyntasticCheck<CR>
 "nnoremap <silent> <F9> :!phpcs --standard=/Users/webalab/Projects/utils/pulsesniffer/ %<CR>
-nnoremap <silent> <F10> :nohl<CR>
+nnoremap <leader>h :nohl<CR>
 
 "Moving splits with control+ hjkl
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
- 
- " Mapping W and Q
- :command! W w
- :command! Q q
 
- "This sets up the command to open files within the current file's path
-" cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-" map <leader>ew :e %%
-" map <leader>es :sp %%
-" map <leader>ev :vsp %%
-" map <leader>et :tabe %%
+" Mapping W and Q
+:command! W w
+:command! Q q
 
- " Easier to type, and I never use the default behavior.
-" noremap H ^
-" noremap L $
-" vnoremap L g_
-
-"Add  shortcut to switch thru buffers
-"
-"Add cmd E to do find, election or word and highlight the results
-"Add cmd g to flip thru results
-"Add cmd G to flip thru reslts backwards
-
-"Add shortcuts to navigate thru splits
-"
-"lk
 nmap <leader><leader> :NERDTreeToggle<CR>
 "mapping nerdtree to ,n
 "nmap <leader>n :NERDTreeToggle<CR>
@@ -177,6 +199,12 @@ map <leader>ss :setlocal spell!<cr>
 map ww :call Preserve("normal vi'")<CR>
  
 
+:vmap sp "zdi<?php <C-R>z ?><Esc> 
+": wrap <?php ?> around visually selected text
+
+nmap <leader>r :ChromeReload<CR>
+nmap <leader>] :call Preserve(">>")<CR>
+nmap <leader>[ :call Preserve("<<")<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search n Find
@@ -223,7 +251,7 @@ endfunction
 " call NERDTreeHighlightFile('.json', 'darkred', 'black')
 " call NERDTreeHighlightFile('.twig', 'blue', 'black')
 
-
+let NERDTreeHijackNetrw=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => UltiSniip
@@ -268,13 +296,14 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " => Airline settings (Status bar)  
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
+let g:Powerline_symbols = 'fancy'
 let g:airline_theme='base16'
 let g:airline_powerline_fonts = 0 
 " this is to always show the status bar
 set laststatus=2
 "branch parts
 let g:airline_enable_branch=1
-""seperators ◀▶  « »  〈 〉 ◀ ◄◄  ⫷ ⫸  ◂▸
+""seperators ◀▶  « »  〈 〉 ◂▸◀ ◄◄  ⫷ ⫸  ◂▸  ❯❮
 let g:airline_left_sep = '▸'
 let g:airline_right_sep = '◂'
 "modes
@@ -289,6 +318,27 @@ let g:airline_detect_whitespace=0
 " => Shit i don't know wtf but don't have the ballz to delete 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
+ "This sets up the command to open files within the current file's path
+" cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+" map <leader>ew :e %%
+" map <leader>es :sp %%
+" map <leader>ev :vsp %%
+" map <leader>et :tabe %%
+
+ " Easier to type, and I never use the default behavior.
+" noremap H ^
+" noremap L $
+" vnoremap L g_
+
+"Add  shortcut to switch thru buffers
+"
+"Add cmd E to do find, election or word and highlight the results
+"Add cmd g to flip thru results
+"Add cmd G to flip thru reslts backwards
+
+"Add shortcuts to navigate thru splits
+"
+"lk
  function! Preserve(command)
   let _s=@/
   let l = line(".")
