@@ -53,6 +53,9 @@ Plugin 'jlanzarotta/bufexplorer'
 "Plugin 'fholgado/minibufexpl.vim'
 " Plugin 'tmhedberg/matchit'
 Plugin 'tell-k/vim-browsereload-mac'
+Plugin 'docteurklein/vim-symfony'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'Valloric/YouCompleteMe'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -153,8 +156,8 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=234
 " => Syntastic Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-let g:syntastic_php_checkers = ["phpcs"]
-let g:syntastic_php_phpcs_args = '--standard=/Users/webalab/Projects/utils/pulsesniffer/ '
+let g:syntastic_php_checkers = ['phpcs']
+let g:syntastic_php_phpcs_args = '--standard=/Users/anperez/Projects/utils/pulsesniffer/ '
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -174,7 +177,7 @@ nnoremap <silent> <F6> :FufBuffer<CR>
 nnoremap <silent> <F6> :call Preserve("normal gg=G")<CR>
 nnoremap <silent> <F8> :source $MYVIMRC<CR>
 nnoremap <silent> <F9> :SyntasticCheck<CR>
-"nnoremap <silent> <F9> :!phpcs --standard=/Users/webalab/Projects/utils/pulsesniffer/ %<CR>
+"nnoremap <silent> <F9> :!phpcs --standard=/Users/anperez/Projects/utils/pulsesniffer/ %<CR>
 nnoremap <leader>h :nohl<CR>
 
 "Moving splits with control+ hjkl
@@ -205,6 +208,23 @@ map ww :call Preserve("normal vi'")<CR>
 nmap <leader>r :ChromeReload<CR>
 nmap <leader>] :call Preserve(">>")<CR>
 nmap <leader>[ :call Preserve("<<")<CR>
+
+"Unitest
+nnoremap <leader>u :call RunPHPUnitTest()<cr>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Symfony settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+
+let g:symfony_enable_shell_mapping = 0
+
+map <F12> :call OpenSymfonyConsole()<CR>
+fun! OpenSymfonyConsole()
+    silent !clear
+    :execute ":! php app/console -s --no-ansi"
+endfun
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search n Find
@@ -359,9 +379,9 @@ set backup
 set noswapfile
 "set undofile=yes
 
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
-set directory=~/.vim/tmp/swap// 
+set undodir=~/.vim/tmp/undo/
+set backupdir=~/.vim/tmp/backup/
+set directory=~/.vim/tmp/swap/
 
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
@@ -375,3 +395,24 @@ if !isdirectory(expand(&directory))
 endif
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Unitest
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+function! RunPHPUnitTest()
+    cd %:p:h
+    let result = system("sudo phpunit --configuration app/phpunit.xml " . bufname("%"))
+    split __PHPUnit_Result__
+    normal! ggdG
+    setlocal buftype=nofile
+    call append(0, split(result, '\v\n'))
+    cd -
+endfunction
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => YouCompleteMe
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
