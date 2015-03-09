@@ -56,6 +56,7 @@ Plugin 'tell-k/vim-browsereload-mac'
 Plugin 'docteurklein/vim-symfony'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'marijnh/tern_for_vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
