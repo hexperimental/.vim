@@ -35,7 +35,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
 Plugin 'kien/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
+"Plugin 'mileszs/ack.vim'
 " Plu
 " Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
@@ -57,6 +57,11 @@ Plugin 'docteurklein/vim-symfony'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'marijnh/tern_for_vim'
+Plugin 'dkprice/vim-easygrep'
+Plugin 'Valloric/MatchTagAlways'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'gabesoft/vim-ags'
+
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -411,6 +416,16 @@ function! RunPHPUnitTest()
 endfunction
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => MatchTag
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'twig' : 1,
+    \}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => YouCompleteMe
